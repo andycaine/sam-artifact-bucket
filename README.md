@@ -1,4 +1,4 @@
-# sam-artefact-bucket
+# sam-artifact-bucket
 
 An artefact bucket for the SAM CLI to package artefacts to.
 
