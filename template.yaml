@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: "AWS::Serverless-2016-10-31"
+Description: Artifact bucket for AWS SAM CLI
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: sam-artifact-bucket
+    Description: Artifact bucket for AWS SAM CLI
+    Author: Andy Caine
+    SpdxLicenseId: LICENSE
+    ReadmeUrl: README.md
+    HomePageUrl: https://github.com/andycaine/sam-artifact-bucket#readme
+    SemanticVersion: 1.0.0
+    SourceCodeUrl: https://github.com/andycaine/sam-artifact-bucket
+Resources:
+  SamCliSourceBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicPolicy: true
+        BlockPublicAcls: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: aws:kms
+      VersioningConfiguration:
+        Status: Enabled
+  SamCliSourceBucketBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        !Ref SamCliSourceBucket
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject
+            Effect: Allow
+            Resource: !Sub arn:${AWS::Partition}:s3:::${SamCliSourceBucket}/*
+            Principal:
+              Service: serverlessrepo.amazonaws.com
+            Condition:
+              StringEquals:
+                aws:SourceAccount:
+                  !Ref AWS::AccountId
+          - Action:
+              - s3:*
+            Effect: Deny
+            Resource:
+              - !Sub arn:${AWS::Partition}:s3:::${SamCliSourceBucket}
+              - !Sub arn:${AWS::Partition}:s3:::${SamCliSourceBucket}/*
+            Principal: "*"
+            Condition:
+              Bool:
+                aws:SecureTransport: "false"
+Outputs:
+  SourceBucket:
+    Value:
+      !Ref SamCliSourceBucket
