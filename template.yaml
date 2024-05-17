@@ -6,7 +6,7 @@ Metadata:
     Name: sam-artifact-bucket
     Description: Artifact bucket for AWS SAM CLI
     Author: Andy Caine
-    SpdxLicenseId: LICENSE
+    LicenseUrl: LICENSE
     ReadmeUrl: README.md
     HomePageUrl: https://github.com/andycaine/sam-artifact-bucket#readme
     SemanticVersion: 1.0.0
