@@ -1,6 +1,6 @@
 # sam-artifact-bucket
 
-An artefact bucket for the SAM CLI to package artefacts to.
+An artifact bucket for the SAM CLI to package artifacts to.
 
 ## Description
 
